@@ -7,7 +7,7 @@ import { db } from "./db";
 function App() {
   const [showQuestion, setShowQuestion] = useState(false);
   const [titleAnimated, setTitleAnimated] = useState(false);
-  const [score, setScore] = useState(0);
+  const [, setScore] = useState(0);
   // const [hasSaved, setHasSaved] = useState(false);
   const total = 10;
 
