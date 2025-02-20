@@ -8,16 +8,13 @@ function App() {
   const [showQuestion, setShowQuestion] = useState(false);
   const [titleAnimated, setTitleAnimated] = useState(false);
   const [, setScore] = useState(0);
-  // const [hasSaved, setHasSaved] = useState(false);
   const total = 10;
 
   const handleStart = () => {
     setShowQuestion(true);
   };
   const handleRestart = async (finalScore) => {
-    // if (hasSaved) return; // Prevent multiple saves
-    // setHasSaved(true);
-
+   
     console.log("handleRestart triggered");
     const percentage = Math.round((finalScore / total) * 100);
     await db.attempts.add({
@@ -49,7 +46,8 @@ function App() {
         className="flex flex-col justify-center items-center text-center absolute top-20"
       >
         <p className="text-5xl font-bold">Quiz App</p>
-        <p>Lorem ipsum dolor sit amet.</p>
+        <p className="mt-3">Test your knowledge within 3 minutes!
+        </p>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
