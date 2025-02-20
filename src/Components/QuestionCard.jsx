@@ -3,10 +3,10 @@ import questions from "../data/questions.json";
 import EndScreen from "./EndScreen";
 import PropTypes from "prop-types";
 
-const QuestionCard = ({onRestart}) => {
+const QuestionCard = ({onRestart,setScore}) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
-  const [score, setScore] = useState(0);
+  const [localscore, setLocalScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
@@ -17,7 +17,7 @@ const QuestionCard = ({onRestart}) => {
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setUserAnswer("");
-    setScore(0);
+    setLocalScore(0);
     setQuizCompleted(false);
     setSelectedAnswer(null);
     setIsCorrect(null);
@@ -31,7 +31,7 @@ const QuestionCard = ({onRestart}) => {
       setSelectedAnswer(null);
       setIsCorrect(null);
       setTimer(30);
-    } else {
+    } else  {
       setQuizCompleted(true);
     }
   },[currentQuestion,len]);
@@ -50,22 +50,23 @@ const QuestionCard = ({onRestart}) => {
   const handleAnswer = (answer) => () => {
     setSelectedAnswer(answer);
     const correctAnswer = questions[currentQuestion].answer;
+    let updatedScore = localscore;
     if (questions[currentQuestion].type === "mcq") {
       if (answer === correctAnswer) {
-        setScore(score + 1);
+        updatedScore += 1;
         setIsCorrect(true);
       } else {
         setIsCorrect(false);
       }
     } else {
       if (parseInt(userAnswer) === questions[currentQuestion].answer) {
-        setScore(score + 1);
+        updatedScore += 1;
         setIsCorrect(true);
       } else {
         setIsCorrect(false);
       }
     }
-    
+    setLocalScore(updatedScore);
     setTimeout(() => {
       handleNextQuestion();
     }, 1300);
@@ -74,16 +75,18 @@ const QuestionCard = ({onRestart}) => {
   
   useEffect(() => {
     if (quizCompleted) {
-      onRestart(); 
+      onRestart(localscore); 
+      setScore(localscore);
+      
     }
-  }, [quizCompleted, onRestart])
+  }, [quizCompleted, onRestart,localscore,setScore]);
  
   return (
     <div className="flex justify-center items-center h-full">
       {quizCompleted ? (
         <div className="w-full h-full flex justify-center items-center">
 
-          <EndScreen score={score} total={len} onRestart={resetQuiz}/>
+          <EndScreen score={localscore} total={len} onRestart={resetQuiz}/>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center p-[2rem] bg-white rounded-xl shadow-md">
@@ -142,6 +145,7 @@ const QuestionCard = ({onRestart}) => {
 
 QuestionCard.propTypes = {
   onRestart: PropTypes.func.isRequired,
+  setScore: PropTypes.func.isRequired,
 };
 
 

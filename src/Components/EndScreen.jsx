@@ -58,9 +58,13 @@ const EndScreen = ({ score, total, onRestart }) => {
         </Box>
       </Box>
       </motion.div>
-      <div className="cursor-pointer">
-        <button  onClick={()=>onRestart()}>Start Again</button>
-      </div>
+  
+        <motion.button  whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          initial={{ y: 0, opacity: 1 }}
+          
+          className="mt-6 px-4 py-2 bg-blue-400 flex justify-center items-center rounded-full text-white font-bold cursor-pointer shadow-lg" onClick={onRestart}>Start Again</motion.button>
+   
     </div>
   );
 };
